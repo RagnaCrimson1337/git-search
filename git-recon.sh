@@ -14,6 +14,17 @@ echo "==============================="
 echo "      GIT SEARCH TOOL"
 echo "==============================="
 echo
+
+# Check if assetfinder is installed, if not, download it
+if ! command -v assetfinder &> /dev/null; then
+    echo "[!] Assetfinder not found. Downloading it..."
+    wget -q -O assetfinder.tar.gz https://github.com/tomnomnom/assetfinder/releases/latest/download/assetfinder-linux-amd64.tar.gz
+    tar -xzf assetfinder.tar.gz -C /usr/local/bin/
+    chmod +x /usr/local/bin/assetfinder
+    rm assetfinder.tar.gz
+    echo "[+] Assetfinder installed successfully."
+fi
+
 echo "[+] Fetching subdomains for $DOMAIN and its assets from crt.sh..."
 
 SUBDOMAINS=$(curl -s "https://crt.sh/?q=%25${DOMAIN}&output=json" | jq -r '.[].name_value' 2>/dev/null | sort -u)
